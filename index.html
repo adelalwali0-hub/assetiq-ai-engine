@@ -98,6 +98,9 @@ Pending:
 
 </div>
 <h3>Upload Drawing</h3>
+  <button id="deleteModeBtn">
+Delete Mode
+  </button>
 
 <input type="file" id="imageUpload" accept="image/*">
 
@@ -147,8 +150,28 @@ const canvas=document.getElementById("weldCanvas");
 const ctx=canvas.getContext("2d");
 
 const tableBody=document.getElementById("tableBody");
+  const deleteModeBtn =
+document.getElementById("deleteModeBtn");
 
 let weldCounter=1;
+  let deleteMode = false;
+  deleteModeBtn.addEventListener("click",function(){
+
+deleteMode = !deleteMode;
+
+if(deleteMode){
+
+deleteModeBtn.style.background="red";
+deleteModeBtn.textContent="Delete ON";
+
+}else{
+
+deleteModeBtn.style.background="#2563eb";
+deleteModeBtn.textContent="Delete Mode";
+
+}
+
+});
 
 function resizeCanvas(){
 
