@@ -209,6 +209,12 @@ ctx.fillText(weldCounter,x,y);
 
 tableBody.innerHTML += row;
 
+  tableBody.innerHTML += row;
+
+document.getElementById("totalWelds").textContent = weldCounter;
+document.getElementById("pendingWelds").textContent = weldCounter;
+
+weldCounter++;
 weldCounter++;
 
 });
