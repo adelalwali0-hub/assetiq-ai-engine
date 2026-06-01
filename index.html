@@ -104,7 +104,8 @@ left:0;
 
 <thead>
 <tr>
-<th>Weld No.</th>
+  <th>Weld No.</th>
+<th>Status</th>
 <th>X</th>
 <th>Y</th>
 </tr>
@@ -159,18 +160,26 @@ const rect=canvas.getBoundingClientRect();
 const x=e.clientX-rect.left;
 const y=e.clientY-rect.top;
 
-ctx.strokeStyle="red";
-ctx.lineWidth=3;
+  ctx.beginPath();
+ctx.arc(x,y,18,0,2*Math.PI);
 
-ctx.strokeRect(x-15,y-15,30,30);
+ctx.fillStyle="#ef4444";
+ctx.fill();
 
-ctx.fillStyle="red";
-ctx.font="bold 16px Arial";
-ctx.fillText(weldCounter,x-5,y+5);
+ctx.strokeStyle="white";
+ctx.lineWidth=2;
+ctx.stroke();
 
-const row=`
+ctx.fillStyle="white";
+ctx.font="bold 14px Arial";
+ctx.textAlign="center";
+ctx.textBaseline="middle";
+ctx.fillText(weldCounter,x,y);
+
+  const row=`
 <tr>
 <td>W-${String(weldCounter).padStart(3,"0")}</td>
+<td>Pending</td>
 <td>${Math.round(x)}</td>
 <td>${Math.round(y)}</td>
 </tr>
