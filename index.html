@@ -155,6 +155,7 @@ document.getElementById("deleteModeBtn");
 
 let weldCounter=1;
   let deleteMode = false;
+  let welds = [];
   deleteModeBtn.addEventListener("click",function(){
 
 deleteMode = !deleteMode;
@@ -205,6 +206,14 @@ const rect=canvas.getBoundingClientRect();
 const x=e.clientX-rect.left;
 const y=e.clientY-rect.top;
 
+  const weld = {
+    id: weldCounter,
+    x: x,
+    y: y,
+    status: "Pending"
+};
+
+welds.push(weld);
   ctx.beginPath();
 ctx.arc(x,y,18,0,2*Math.PI);
 
@@ -228,13 +237,40 @@ y
   const row = `
 <tr>
 <td>W-${String(weldCounter).padStart(3,"0")}</td>
-<td>Pending</td>
+<td id="status-${weldCounter}">
+Pending
+</td>
 <td>${Math.round(x)}</td>
 <td>${Math.round(y)}</td>
 </tr>
 `;
 
 tableBody.innerHTML += row;
+  document.getElementById(`status-${weldCounter}`).addEventListener("click",function(){
+
+    if(this.textContent==="Pending"){
+        this.textContent="Completed";
+    }else{
+        this.textContent="Pending";
+    }
+
+    let statuses =
+    document.querySelectorAll('td[id^="status-"]');
+
+    let completedCount = 0;
+
+    statuses.forEach(item=>{
+        if(item.textContent==="Completed"){
+            completedCount++;
+        }
+    });
+
+    document.getElementById("completedWelds").textContent =
+    completedCount;
+
+    document.getElementById("pendingWelds").textContent =
+    weldCounter - completedCount;
+});
 
 
   document.getElementById("totalWelds").textContent = weldCounter;
