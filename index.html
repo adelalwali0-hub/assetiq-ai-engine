@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AssetIQ AI Engine</title>
+
+<style>
+
+body{
+background:#0b1220;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+h1{
+color:#38bdf8;
+}
+
+.upload-box{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+#drawingArea{
+position:relative;
+margin-top:20px;
+background:white;
+height:700px;
+border-radius:10px;
+overflow:hidden;
+}
+
+#weldCanvas{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+cursor:crosshair;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #333;
+padding:10px;
+text-align:center;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>AssetIQ AI Engine</h1>
+
+<div class="upload-box">
+
+<h3>Upload Drawing</h3>
+
+<input type="file" id="imageUpload" accept="image/*">
+
+</div>
+
+<div id="drawingArea">
+
+<img
+id="drawingImage"
+style="
+width:100%;
+height:100%;
+object-fit:contain;
+position:absolute;
+top:0;
+left:0;
+">
+
+<canvas id="weldCanvas"></canvas>
+
+</div>
+
+<h2>Weld Register</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Weld No.</th>
+<th>X</th>
+<th>Y</th>
+</tr>
+</thead>
+
+<tbody id="tableBody">
+</tbody>
+
+</table>
+
+<script>
+
+const imageUpload=document.getElementById("imageUpload");
+const drawingImage=document.getElementById("drawingImage");
+
+const canvas=document.getElementById("weldCanvas");
+const ctx=canvas.getContext("2d");
+
+const tableBody=document.getElementById("tableBody");
+
+let weldCounter=1;
+
+function resizeCanvas(){
+
+canvas.width=canvas.offsetWidth;
+canvas.height=canvas.offsetHeight;
+
+}
+
+window.addEventListener("resize",resizeCanvas);
+
+resizeCanvas();
+
+imageUpload.addEventListener("change",function(e){
+
+const file=e.target.files[0];
+
+if(file){
+
+const url=URL.createObjectURL(file);
+
+drawingImage.src=url;
+
+}
+
+});
+
+canvas.addEventListener("click",function(e){
+
+const rect=canvas.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+const y=e.clientY-rect.top;
+
+ctx.strokeStyle="red";
+ctx.lineWidth=3;
+
+ctx.strokeRect(x-15,y-15,30,30);
+
+ctx.fillStyle="red";
+ctx.font="bold 16px Arial";
+ctx.fillText(weldCounter,x-5,y+5);
+
+const row=`
+<tr>
+<td>W-${String(weldCounter).padStart(3,"0")}</td>
+<td>${Math.round(x)}</td>
+<td>${Math.round(y)}</td>
+</tr>
+`;
+
+tableBody.innerHTML += row;
+
+weldCounter++;
+
+});
+
+</script>
+
+</body>
+</html>
