@@ -196,7 +196,11 @@ ctx.fillStyle="white";
 ctx.font="bold 14px Arial";
 ctx.textAlign="center";
 ctx.textBaseline="middle";
-ctx.fillText(weldCounter,x,y);
+  ctx.fillText(
+String(weldCounter).padStart(3,"0"),
+x,
+y
+);
 
   const row = `
 <tr>
@@ -209,14 +213,12 @@ ctx.fillText(weldCounter,x,y);
 
 tableBody.innerHTML += row;
 
-  tableBody.innerHTML += row;
 
-document.getElementById("totalWelds").textContent = weldCounter;
+  document.getElementById("totalWelds").textContent = weldCounter;
 document.getElementById("pendingWelds").textContent = weldCounter;
 
 weldCounter++;
-weldCounter++;
-
+  
 });
 
 </script>
