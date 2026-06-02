@@ -156,6 +156,11 @@ document.getElementById("deleteModeBtn");
 let weldCounter=1;
   let deleteMode = false;
   let welds = [];
+  const savedWelds = localStorage.getItem("welds");
+
+if(savedWelds){
+    welds = JSON.parse(savedWelds);
+}
   deleteModeBtn.addEventListener("click",function(){
 
 deleteMode = !deleteMode;
@@ -184,7 +189,51 @@ canvas.height=canvas.offsetHeight;
 window.addEventListener("resize",resizeCanvas);
 
 resizeCanvas();
+  
+if(welds.length > 0){
 
+    weldCounter = welds.length + 1;
+
+    welds.forEach(function(weld){
+
+        ctx.beginPath();
+        ctx.arc(weld.x,weld.y,18,0,2*Math.PI);
+
+        ctx.fillStyle="#ef4444";
+        ctx.fill();
+
+        ctx.strokeStyle="white";
+        ctx.lineWidth=2;
+        ctx.stroke();
+
+        ctx.fillStyle="white";
+        ctx.font="bold 14px Arial";
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";
+
+        ctx.fillText(
+            String(weld.id).padStart(3,"0"),
+            weld.x,
+            weld.y
+        );
+
+        const row = `
+        <tr>
+        <td>W-${String(weld.id).padStart(3,"0")}</td>
+        <td>${weld.status}</td>
+        <td>${Math.round(weld.x)}</td>
+        <td>${Math.round(weld.y)}</td>
+        </tr>
+        `;
+
+        tableBody.innerHTML += row;
+
+    });
+
+    document.getElementById("totalWelds").textContent = welds.length;
+    document.getElementById("pendingWelds").textContent = welds.length;
+
+}
 imageUpload.addEventListener("change",function(e){
 
 const file=e.target.files[0];
@@ -214,6 +263,7 @@ const y=e.clientY-rect.top;
 };
 
 welds.push(weld);
+  localStorage.setItem("welds",JSON.stringify(welds));
   ctx.beginPath();
 ctx.arc(x,y,18,0,2*Math.PI);
 
